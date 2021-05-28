@@ -1,19 +1,19 @@
 import "./App.css";
 import Api from "./api/Api";
 import { useEffect, useState } from "react";
+import Meetings from "./components/meetings/Meetings";
 
 const App = () => {
   const [facilitators, setFacilitators] = useState();
+  const [meetingList, setMeetingList] = useState();
 
   useEffect(() => {
-    Api.getFacilitatorList().then(setFacilitators);
+    Api.getMeetings().then(setMeetingList);
   }, []);
 
-  return facilitators !== undefined ? (
+  return meetingList !== undefined ? (
     <div>
-      {facilitators.map((facilitator) => (
-        <p>{facilitator.name}</p>
-      ))}
+      <Meetings meetingList={meetingList} />
     </div>
   ) : (
     <div>Loading...</div>

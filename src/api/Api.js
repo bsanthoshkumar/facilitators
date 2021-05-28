@@ -1,8 +1,7 @@
 import fetch from "node-fetch";
 
 const Api = {
-  getFacilitatorList: () =>
-    fetch("/api/getFacilitatorList").then((res) => res.json()),
+  getMeetings: () => fetch("/api/getMeetings").then((res) => res.json()),
 };
 
 export default Api;
