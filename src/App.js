@@ -1,22 +1,20 @@
 import "./App.css";
-import Api from "./api/Api";
-import { useEffect, useState } from "react";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Meetings from "./components/meetings/Meetings";
+import Facilitators from "./components/facilitators/Facilitators";
 
 const App = () => {
-  const [facilitators, setFacilitators] = useState();
-  const [meetingList, setMeetingList] = useState();
 
-  useEffect(() => {
-    Api.getMeetings().then(setMeetingList);
-  }, []);
-
-  return meetingList !== undefined ? (
-    <div>
-      <Meetings meetingList={meetingList} />
-    </div>
-  ) : (
-    <div>Loading...</div>
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route path="/meetings" component={Meetings} />
+        <Route path={`/:meeting/facilitators`} component={Facilitators} />
+        <Route path="/">
+          <Redirect to="/meetings" />
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 };
 

@@ -1,6 +1,6 @@
 const express = require("express");
 const { Pool } = require("pg");
-const setupDB = require("../migration/setupDB");
+const setupTable = require("../migration/setupTable");
 const datastore = require("../datastore/dataStore");
 
 const pool = new Pool({
@@ -11,7 +11,7 @@ const pool = new Pool({
   port: 5432,
 });
 pool.connect();
-setupDB(pool);
+setupTable(pool);
 
 const app = express();
 
@@ -26,6 +26,14 @@ app.get("/api/getMeetings", async (req, res) => {
     .query(pool, selectQuery)
     .then((result) => res.json(result))
     .catch((e) => res.send(400, "Data not found"));
+});
+
+app.get("/api/getFacilitators", async (req, res) => {
+  const query = `SELECT * FROM facilitators WHERE meeting='${req.query.meeting}';`;
+  datastore
+    .query(pool, query)
+    .then((result) => res.json(result))
+    .catch(() => res.send(400, "Facilitators not found"));
 });
 
 app.listen(8000, () => console.log("listening on port 8000..."));
